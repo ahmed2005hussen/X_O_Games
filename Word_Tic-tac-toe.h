@@ -131,7 +131,9 @@ bool word_board<T>::is_win() {
     binary.emplace_back(string(1, this->board[2][0]) + string(1, this->board[1][0]) + string(1, this->board[0][0]));
     binary.emplace_back(string(1, this->board[2][1]) + string(1, this->board[1][1]) + string(1, this->board[0][1]));
     binary.emplace_back(string(1, this->board[2][2]) + string(1, this->board[1][2]) + string(1, this->board[0][2]));
-
+    for(int i = 0 ; i<binary.size();i++){
+        cout<<binary[i]<<endl;
+    }
     for (int i = 0; i < 16; i++) {
         int l, r, mid;
         r = input.size() - 1;
@@ -224,8 +226,10 @@ word_random_player<T>::word_random_player(T symbol): RandomPlayer<T>(symbol) {}
 template<typename T>
 void word_random_player<T>::getmove(int &x, int &y) {
     srand(static_cast<unsigned int>(time(0)));
+    char randomChar = 'A' + (rand() % 26);
     x = rand() % 3;
     y = rand() % 3;
+    this->symbol = randomChar ;
 }
 
 
