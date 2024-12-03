@@ -1,7 +1,7 @@
 #include <iostream>
 #include "BoardGame_Classes.h"
 #include " Pyramic_Tic-Tac-Toe.h"
-
+#include "Word_Tic-tac-toe.h"
 using namespace std;
 
 void game1() {
@@ -63,6 +63,71 @@ void game1() {
     }
 
 }
+void game2(){}
+void game3(){}
+void game4(){
+
+    char choice;
+    Player<char>* players[2];
+    word_board<char>* B = new word_board<char>();
+    string playerXName, player2Name;
+    char player1Symbol, player2Symbol;
+
+    // Set up player 1
+    cout << "Enter Player 1 name: ";
+    cin >> playerXName;
+
+    cout << "Choose Player 1 type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
+    while (true) {
+        cin >> choice;
+        if (choice == '1') {
+            players[0] = new word_player<char>(playerXName, ' ');
+            break;
+        } else if (choice == '2') {
+            players[0] = new word_random_player<char>(player1Symbol);
+            break;
+        } else {
+            cout << "Invalid choice for Player 1. Enter a valid choice \n";
+        }
+    }
+
+    // Set up player 2
+    cout << "Enter Player 2 name: ";
+    cin >> player2Name;
+
+
+    cout << "Choose Player 2 type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
+    while (true) {
+        cin >> choice;
+        if (choice == '1') {
+            players[1] = new word_player<char>(player2Name, ' ');
+            break;
+        } else if (choice == '2') {
+            players[1] = new word_random_player<char>(player2Symbol);
+            break;
+        } else {
+            cout << "Invalid choice for Player 2. Enter a valid choice.\n";
+        }
+    }
+
+    // Create the game manager and run the game
+    GameManager<char> word_game(B, players);
+    word_game.run();
+
+    delete B;
+    for (int i = 0; i < 2; ++i) {
+        delete players[i];
+    }
+
+}
+void game5(){}
+void game6(){}
+void game7(){}
+void game8(){}
 
 int main() {
 
@@ -97,7 +162,7 @@ int main() {
         main();
 
     } else if (n == '4') {
-        //game4();
+        game4();
         main();
 
     } else if (n == '5') {
@@ -123,6 +188,7 @@ int main() {
 
     return 0;
 }
+
 
 
 
