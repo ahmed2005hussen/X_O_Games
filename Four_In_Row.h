@@ -17,15 +17,10 @@ template <typename T>
 class Four_In_Row :public Board<T> {
 public:
     Four_In_Row();
-
     bool update_board(int x, int y, T symbol);
-
     void display_board();
-
     bool is_win();
-
     bool is_draw();
-
     bool game_is_over();
 
 };
@@ -177,5 +172,3 @@ void X_O_Random_Player<T>::getmove(int& x, int& y) {
 }
 
 #endif //_3X3X_O_H
-
-//#endif //ASS2_GAMES_OOP_FOUR_IN_ROW_H
