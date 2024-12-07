@@ -17,10 +17,15 @@ template <typename T>
 class Four_In_Row :public Board<T> {
 public:
     Four_In_Row();
+
     bool update_board(int x, int y, T symbol);
+
     void display_board();
+
     bool is_win();
+
     bool is_draw();
+
     bool game_is_over();
 
 };
@@ -42,7 +47,7 @@ public:
 
 //--------------------- IMPLEMENTATION ------------------
 
-// Constructor for X_O_Board
+// Constructor for Four_In_Row
 template <typename T>
 Four_In_Row<T>::Four_In_Row() {
     this->rows = 6;
@@ -59,14 +64,21 @@ Four_In_Row<T>::Four_In_Row() {
 
 template<typename T>
 bool Four_In_Row<T>::update_board(int x, int y, T symbol) {
+    if (x >= 0 && x < this->rows && y >= 0 && y < this->columns && this->board[x][y] == 0) {
+        // Ensure the first move is in the last row
+        if (this->n_moves == 0 && x != this->rows - 1) {
+            cout << "The first move must be in the last row!" << endl;
+            return false; 
+        }
 
-    if (x >= 0 && x < this->rows && y >= 0 && y < this->columns && this->board[x][y] != ' ' && (this->board[x][y] != 'X' && this->board[x][y] != 'O')) {
-        this->board[x][y] = toupper(symbol);
+        this->board[x][y] = toupper(symbol); 
         this->n_moves++;
         return true;
     }
-    return false;
+    cout << "Invalid move. Please try again." << endl;
+    return false; 
 }
+
 
 // Display the board and the pieces on it
 template <typename T>
@@ -74,22 +86,28 @@ void Four_In_Row<T>::display_board() {
     for (int i = 0; i < this->rows; i++) {
         cout << "\n| ";
         for (int j = 0; j < this->columns; j++) {
-            cout << "(" << i << "," << j << ")";
-            cout << setw(2) << this->board[i][j] << " |";
+            if (this->board[i][j] == 0) {
+                cout << "(" << i << "," << j << ")";
+            }
+            else {
+                cout << "  " << this->board[i][j] << "  ";
+            }
+            cout << " |"; 
         }
-        cout << "\n-----------------------------";
+        cout << "\n----------------------------------------------------------"; 
     }
     cout << endl;
 }
+
 
 template <typename T>
 bool Four_In_Row<T>::is_win() {
     // Check rows and columns
     for (int i = 0; i < this->rows; i++) {
         if ((this->board[i][0] == this->board[i][1] && this->board[i][1] == this->board[i][2] &&
-             this->board[i][2] == this->board[i][3] && this->board[i][0] != 0) ||
+            this->board[i][2] == this->board[i][3] && this->board[i][0] != 0) ||
             (this->board[0][i] == this->board[1][i] && this->board[1][i] == this->board[2][i] &&
-             this->board[2][i] == this->board[3][i] && this->board[0][i] != 0)) {
+                this->board[2][i] == this->board[3][i] && this->board[0][i] != 0)) {
             return true;
         }
     }
@@ -146,6 +164,12 @@ bool Four_In_Row<T>::is_draw() {
     return (this->n_moves == 9 && !is_win());
 }
 
+template <typename T>
+bool Four_In_Row<T>::game_is_over() {
+    return is_win() || is_draw();
+}
+
+
 //----------------------------------------
 // Constructor for X_O_Player
 template <typename T>
@@ -153,8 +177,9 @@ X_O_Player<T>::X_O_Player(string name, T symbol) : Player<T>(name, symbol) {}
 
 template <typename T>
 void X_O_Player<T>::getmove(int& x, int& y) {
-    cout << "\nPlease enter your move x and y (0 to 2) separated by spaces: ";
-    cin >> x >> y;
+    cout << "\nPlease enter your move y (0-6): ";
+    x = 5;
+    cin >> y;
 }
 
 // Constructor for X_O_Random_Player
@@ -167,8 +192,9 @@ X_O_Random_Player<T>::X_O_Random_Player(T symbol) : RandomPlayer<T>(symbol) {
 
 template <typename T>
 void X_O_Random_Player<T>::getmove(int& x, int& y) {
-    x = rand() % this->dimension;  // Random number between 0 and 2
-    y = rand() % this->dimension;
+    x = rand() % 6;  // Random number between 0 and 2
+    y = rand() % 7;
 }
 
 #endif //_3X3X_O_H
+
