@@ -190,7 +190,33 @@ void game4(){
 }
 void game5(){}
 void game6(){}
-void game7(){}
+void game7(){
+
+    Player<char> *players[2];
+    board7<char> *B = new board7<char>();
+    string playerXName, player2Name;
+
+
+    cout << "Enter Player X name: ";
+    cin >> playerXName;
+
+    players[0] = new player_7<char>(playerXName, 'X');
+
+    cout << "Enter Player 2 name: ";
+    cin >> player2Name;
+
+
+    players[1] = new player_7<char>(player2Name, 'O');
+
+
+    GameManager<char> pyramid_game(B, players);
+    pyramid_game.run();
+
+    delete B;
+    for (int i = 0; i < 2; ++i) {
+        delete players[i];
+    }
+}
 void game8(){}
 
 int main() {
