@@ -264,7 +264,7 @@ int main() {
         main();
 
     } else if (n == '7') {
-        //game7();
+       game7();
         main();
 
     } else if (n == '8') {
