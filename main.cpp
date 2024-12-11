@@ -217,7 +217,32 @@ void game7(){
         delete players[i];
     }
 }
-void game8(){}
+void game8(){
+     Player<char> *players[2];
+    unlimated_board<char> *B = new unlimated_board<char>();
+    string playerXName, player2Name;
+
+
+    cout << "Enter Player X name: ";
+    cin >> playerXName;
+
+    players[0] = new player_8<char>(playerXName, 'X');
+
+    cout << "Enter Player 2 name: ";
+    cin >> player2Name;
+
+
+    players[1] = new player_8<char>(player2Name, 'O');
+
+
+    GameManager<char> pyramid_game(B, players);
+    pyramid_game.run();
+
+    delete B;
+    for (int i = 0; i < 2; ++i) {
+        delete players[i];
+    }
+}
 
 int main() {
 
@@ -268,7 +293,7 @@ int main() {
         main();
 
     } else if (n == '8') {
-        //game8();
+        game8();
         main();
 
     } else {
