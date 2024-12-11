@@ -131,9 +131,10 @@ void game2()
 void game3(){}
 void game4(){
 
+    
     char choice;
-    Player<char>* players[2];
-    word_board<char>* B = new word_board<char>();
+    Player<char> *players[2];
+    word_board<char> *B = new word_board<char>();
     string playerXName, player2Name;
     char player1Symbol, player2Symbol;
 
@@ -150,7 +151,7 @@ void game4(){
             players[0] = new word_player<char>(playerXName, ' ');
             break;
         } else if (choice == '2') {
-            players[0] = new word_random_player<char>(player1Symbol);
+            players[0] = new word_random_player<char>(' ');
             break;
         } else {
             cout << "Invalid choice for Player 1. Enter a valid choice \n";
@@ -171,7 +172,7 @@ void game4(){
             players[1] = new word_player<char>(player2Name, ' ');
             break;
         } else if (choice == '2') {
-            players[1] = new word_random_player<char>(player2Symbol);
+            players[1] = new word_random_player<char>(' ');
             break;
         } else {
             cout << "Invalid choice for Player 2. Enter a valid choice.\n";
