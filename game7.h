@@ -335,91 +335,91 @@ bool board7<T>::update_board(int x, int y, T symbol) {
         }
 
         else if ((x == 1 && y == 3) || (x == 2 && y == 3)){
-if(this->board[x][y-1]==' ' && this->board[x-1][y]==' ' &&this->board[x+1][y]==' ' )
-{
-    cout << "do you want move it " << endl;
-    cout << "1 - left " << endl;
-    cout << "2 - up " << endl;
-    cout << "3 - down " << endl;
-    cin >> n;
-    if (n == 1) {
-        x = x;
-        y = y - 1;
-    } else if (n == 2) {
-        x = x - 1;
-        y = y;
-    } else if (n == 3) {
-        x = x + 1;
-        y = y;
-    }
-}
+            if(this->board[x][y-1]==' ' && this->board[x-1][y]==' ' &&this->board[x+1][y]==' ' )
+            {
+                cout << "do you want move it " << endl;
+                cout << "1 - left " << endl;
+                cout << "2 - up " << endl;
+                cout << "3 - down " << endl;
+                cin >> n;
+                if (n == 1) {
+                    x = x;
+                    y = y - 1;
+                } else if (n == 2) {
+                    x = x - 1;
+                    y = y;
+                } else if (n == 3) {
+                    x = x + 1;
+                    y = y;
+                }
+            }
 
-else if(this->board[x][y-1]==' ' && this->board[x-1][y]==' '  )
-{
-    cout << "do you want move it " << endl;
-    cout << "1 - left " << endl;
-    cout << "2 - up " << endl;
-    cin >> n;
-    if (n == 1) {
-        x = x;
-        y = y - 1;
-    } else if (n == 2) {
-        x = x - 1;
-        y = y;
-    }
-}
-else if(this->board[x][y-1]==' ' && this->board[x+1][y]==' ' )
-{
-    cout << "do you want move it " << endl;
-    cout << "1 - left " << endl;
-    cout << "2 - down " << endl;
-    cin >> n;
-    if (n == 1) {
-        x = x;
-        y = y - 1;
-    } else if (n == 2) {
-        x = x + 1;
-        y = y;
-    }
-}
-else if(this->board[x-1][y]==' ' &&this->board[x+1][y]==' ' )
-{
-    cout << "do you want move it " << endl;
-    cout << "1 - up " << endl;
-    cout << "2 - down " << endl;
-    cin >> n;
-    if  (n == 1) {
-        x = x - 1;
-        y = y;
-    } else if (n == 2) {
-        x = x + 1;
-        y = y;
-    }
-}
-else if(this->board[x][y-1]==' '  )
-{
-    cout<< "we will put it left"<<endl;
-    x = x;
-    y = y - 1;
-}
-else if( this->board[x-1][y]==' '  )
-{
-    cout<< "we will put it up"<<endl;
-    x = x - 1;
-    y = y;
-}
-else if(this->board[x+1][y]==' ' )
-{
-    cout<< "we will put it down "<<endl;
-    x = x + 1;
-    y = y;
-}
-else
-{
-    cout<< "we can't move it in this position " <<endl;
-    return false;
+            else if(this->board[x][y-1]==' ' && this->board[x-1][y]==' '  )
+            {
+                cout << "do you want move it " << endl;
+                cout << "1 - left " << endl;
+                cout << "2 - up " << endl;
+                cin >> n;
+                if (n == 1) {
+                    x = x;
+                    y = y - 1;
+                } else if (n == 2) {
+                    x = x - 1;
+                    y = y;
+                }
+            }
+            else if(this->board[x][y-1]==' ' && this->board[x+1][y]==' ' )
+            {
+                cout << "do you want move it " << endl;
+                cout << "1 - left " << endl;
+                cout << "2 - down " << endl;
+                cin >> n;
+                if (n == 1) {
+                    x = x;
+                    y = y - 1;
+                } else if (n == 2) {
+                    x = x + 1;
+                    y = y;
+                }
+            }
+            else if(this->board[x-1][y]==' ' &&this->board[x+1][y]==' ' )
+            {
+                cout << "do you want move it " << endl;
+                cout << "1 - up " << endl;
+                cout << "2 - down " << endl;
+                cin >> n;
+                if  (n == 1) {
+                    x = x - 1;
+                    y = y;
+                } else if (n == 2) {
+                    x = x + 1;
+                    y = y;
+                }
+            }
+            else if(this->board[x][y-1]==' '  )
+            {
+                cout<< "we will put it left"<<endl;
+                x = x;
+                y = y - 1;
+            }
+            else if( this->board[x-1][y]==' '  )
+            {
+                cout<< "we will put it up"<<endl;
+                x = x - 1;
+                y = y;
+            }
+            else if(this->board[x+1][y]==' ' )
+            {
+                cout<< "we will put it down "<<endl;
+                x = x + 1;
+                y = y;
+            }
+            else
+            {
+                cout<< "we can't move it in this position " <<endl;
+                return false;
 
-}
+            }
 
 
         }
@@ -504,6 +504,24 @@ else
                     y = y;
                 }
             }
+            else if(this->board[x][y + 1] == ' ' && this->board[x][y - 1] == ' '&&this->board[x + 1][y] == ' ' )
+            {
+                cout << "do you want move it " << endl;
+                cout << "1 - right " << endl;
+                cout << "2 - left " << endl;
+                cout << "3 - down " << endl;
+                cin >> n;
+                if (n == 1) {
+                    x = x;
+                    y = y + 1;
+                } else if (n == 2) {
+                    x = x;
+                    y = y - 1;
+                } else if (n == 3) {
+                    x = x + 1;
+                    y = y;
+                }
+            }
             else if (this->board[x][y + 1] == ' ' && this->board[x][y - 1] == ' ' )
             {
                 cout << "do you want move it " << endl;
@@ -519,6 +537,7 @@ else
                     y = y - 1;
                 }
             }
+
             else if (this->board[x][y + 1] == ' ' && this->board[x - 1][y] == ' ') {
                 cout << "do you want move it " << endl;
                 cout << "1 - right " << endl;
@@ -611,6 +630,7 @@ else
                 x = x;
                 y = y + 1;
             }
+
             else {
                 cout<< "we can't move it in this position " <<endl;
 
@@ -811,7 +831,7 @@ bool board7<T>::is_win() {
 
 
     if(this->board[0][2] != ' ' &&this->board[0][2] == this->board[1 ][1] &&
-    this->board[1][1] == this->board[2][0]) { return true; }
+       this->board[1][1] == this->board[2][0]) { return true; }
 
     if(this->board[0][3] != ' ' &&this->board[0][3] == this->board[1 ][2] &&
        this->board[1][2] == this->board[2][1]) { return true; }
@@ -858,10 +878,10 @@ player_7<T>::player_7(std::string name, T symbol) : Player<T>(name, symbol) {}
 template<typename T>
 void player_7<T>::getmove(int &x, int &y) {
     cout << "\n" << this->name << ", enter the position for your token do you want to move : " <<endl;
-cout<< "enter x : "<<endl;
-cin>> x;
-cout<< "enter y : "<< endl;
-cin>> y ;
+    cout<< "enter x : "<<endl;
+    cin>> x;
+    cout<< "enter y : "<< endl;
+    cin>> y ;
 
 
 }
