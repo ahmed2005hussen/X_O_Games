@@ -2,8 +2,10 @@
 #include "BoardGame_Classes.h"
 #include " Pyramic_Tic-Tac-Toe.h"
 #include "Word_Tic-tac-toe.h"
-#include "Four_In_Row.h"
-#include "Num_Tic_Tac_Toe.h"
+#include "game7.h"
+#include "game8.h"
+#include"Four_In_Row.h"
+
 using namespace std;
 
 void game1() {
@@ -24,10 +26,10 @@ void game1() {
         cin >> choice;
 
         if (choice == '1') {
-            players[0] = new X_O_Player<char>(playerXName, 'X');
+            players[0] = new Pyramid_player<char>(playerXName, 'X');
             break;
         } else if (choice == '2') {
-            players[0] = new X_O_Random_Player<char>('X');
+            players[0] = new Pyramid_Random_Player<char>('X');
             break;
         } else {
             cout << "Invalid choice for Player 1. enter valid choice \n";
@@ -44,10 +46,10 @@ void game1() {
         cin >> choice;
 
         if (choice == '1') {
-            players[1] = new X_O_Player<char>(player2Name, 'O');
+            players[1] = new Pyramid_player<char>(player2Name, 'O');
             break;
         } else if (choice == '2') {
-            players[1] = new X_O_Random_Player<char>('O');
+            players[1] = new Pyramid_Random_Player<char>('O');
             break;
         } else {
             cout << "Invalid choice for Player 2. enter valid choice.\n";
@@ -64,10 +66,8 @@ void game1() {
         delete players[i];
     }
 
-}
-
-void game2()
-{
+} // done
+void game2() {
     char choice;
     Player<char>* players[2];
     Four_In_Row<char>* B = new Four_In_Row<char>();
@@ -126,13 +126,12 @@ void game2()
     delete B;
     for (int i = 0; i < 2; ++i) {
         delete players[i];
-    }
-}
+    }} // done
 
-void game3(){}
-void game4(){
+void game3() {}
 
-    
+void game4() {
+
     char choice;
     Player<char> *players[2];
     word_board<char> *B = new word_board<char>();
@@ -189,76 +188,13 @@ void game4(){
         delete players[i];
     }
 
-}
+} // done
+void game5() {}
 
-void game5()
-{
+void game6() {}
+
+void game7() {
     char choice;
-    Player<char>* players[2];
-    Num_Board<char>* B = new Num_Board<char>();
-    string playerXName, player2Name;
-
-
-    // Set up player 1
-    cout << "Enter Player X name: ";
-    cin >> playerXName;
-    cout << "Choose Player X type:\n";
-    cout << "1. Human\n";
-    cout << "2. Random Computer\n";
-    while (true) {
-        cin >> choice;
-
-        if (choice == '1') {
-            players[0] = new Num_Player<char>(playerXName, 1);
-            break;
-        }
-        else if (choice == '2') {
-            players[0] = new Num_Random_Player<char>(1);
-            break;
-        }
-        else {
-            cout << "Invalid choice for Player 1. enter valid choice \n";
-        }
-    }
-    // Set up player 2
-    cout << "Enter Player 2 name: ";
-    cin >> player2Name;
-    cout << "Choose Player 2 type:\n";
-    cout << "1. Human\n";
-    cout << "2. Random Computer\n";
-
-    while (true) {
-        cin >> choice;
-
-        if (choice == '1') {
-            players[1] = new Num_Player<char>(player2Name, 2);
-            break;
-        }
-        else if (choice == '2') {
-            players[1] = new Num_Random_Player<char>(2);
-            break;
-        }
-        else {
-            cout << "Invalid choice for Player 2. enter valid choice.\n";
-        }
-    }
-
-    // Create the game manager and run the game
-    GameManager<char> pyramid_game(B, players);
-    pyramid_game.run();
-
-    // Clean up
-    delete B;
-    for (int i = 0; i < 2; ++i) {
-        delete players[i];
-    }
-}
-
-
-void game6(){}
-void game7(){
-
-      char choice;
     Player<char> *players[2];
     board7<char> *B = new board7<char>();
     string playerXName, player2Name;
@@ -309,33 +245,65 @@ void game7(){
     for (int i = 0; i < 2; ++i) {
         delete players[i];
     }
-}
-void game8(){
-     Player<char> *players[2];
+
+} // done
+
+
+void game8() {
+
+    char choice;
+    Player<char> *players[2];
     unlimated_board<char> *B = new unlimated_board<char>();
     string playerXName, player2Name;
-
-
+    // Set up player 1
     cout << "Enter Player X name: ";
     cin >> playerXName;
+    cout << "Choose Player X type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
+    while (true) {
+        cin >> choice;
 
-    players[0] = new player_8<char>(playerXName, 'X');
+        if (choice == '1') {
+            players[0] = new player_8<char>(playerXName, 'X');
+            break;
+        } else if (choice == '2') {
+            players[0] = new player_Random_8<char>('X');
+            break;
+        } else {
+            cout << "Invalid choice for Player 1. enter valid choice \n";
+        }
+    }
 
     cout << "Enter Player 2 name: ";
     cin >> player2Name;
+    cout << "Choose Player 2 type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
 
+    while (true) {
+        cin >> choice;
 
-    players[1] = new player_8<char>(player2Name, 'O');
+        if (choice == '1') {
+            players[1] = new player_8<char>(player2Name, 'O');
+            break;
+        } else if (choice == '2') {
+            players[1] = new player_Random_8<char>('O');
 
-
-    GameManager<char> pyramid_game(B, players);
-    pyramid_game.run();
+            break;
+        } else {
+            cout << "Invalid choice for Player 2. enter valid choice.\n";
+        }
+    }
+    
+    GameManager<char> game8(B, players);
+    game8.run();
 
     delete B;
     for (int i = 0; i < 2; ++i) {
         delete players[i];
     }
-}
+} // done
 
 int main() {
 
@@ -362,7 +330,7 @@ int main() {
         main();
 
     } else if (n == '2') {
-        game2();
+         game2();
         main();
 
     } else if (n == '3') {
@@ -374,7 +342,7 @@ int main() {
         main();
 
     } else if (n == '5') {
-        game5();
+        //game5();
         main();
 
     } else if (n == '6') {
@@ -396,7 +364,6 @@ int main() {
 
     return 0;
 }
-
 
 
 
