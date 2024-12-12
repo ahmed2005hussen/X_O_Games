@@ -258,25 +258,52 @@ void game5()
 void game6(){}
 void game7(){
 
+      char choice;
     Player<char> *players[2];
     board7<char> *B = new board7<char>();
     string playerXName, player2Name;
-
-
+    // Set up player 1
     cout << "Enter Player X name: ";
     cin >> playerXName;
+    cout << "Choose Player X type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
+    while (true) {
+        cin >> choice;
 
-    players[0] = new player_7<char>(playerXName, 'X');
+        if (choice == '1') {
+            players[0] = new player_7<char>(playerXName, 'X');
+            break;
+        } else if (choice == '2') {
+            players[0] = new random_player_7<char>('X');
+            break;
+        } else {
+            cout << "Invalid choice for Player 1. enter valid choice \n";
+        }
+    }
 
     cout << "Enter Player 2 name: ";
     cin >> player2Name;
+    cout << "Choose Player 2 type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
 
+    while (true) {
+        cin >> choice;
 
-    players[1] = new player_7<char>(player2Name, 'O');
+        if (choice == '1') {
+            players[1] = new player_7<char>(player2Name, 'O');
+            break;
+        } else if (choice == '2') {
+            players[1] = new random_player_7<char>('O');
 
-
-    GameManager<char> pyramid_game(B, players);
-    pyramid_game.run();
+            break;
+        } else {
+            cout << "Invalid choice for Player 2. enter valid choice.\n";
+        }
+    }
+    GameManager<char> game7(B, players);
+    game7.run();
 
     delete B;
     for (int i = 0; i < 2; ++i) {
