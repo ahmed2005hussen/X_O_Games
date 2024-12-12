@@ -189,7 +189,68 @@ void game4() {
     }
 
 } // done
-void game5() {}
+void game5()
+{
+    char choice;
+    Player<char>* players[2];
+    Num_Board<char>* B = new Num_Board<char>();
+    string playerXName, player2Name;
+
+
+    // Set up player 1
+    cout << "Enter Player X name: ";
+    cin >> playerXName;
+    cout << "Choose Player X type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
+    while (true) {
+        cin >> choice;
+
+        if (choice == '1') {
+            players[0] = new Num_Player<char>(playerXName, 1);
+            break;
+        }
+        else if (choice == '2') {
+            players[0] = new Num_Random_Player<char>(1);
+            break;
+        }
+        else {
+            cout << "Invalid choice for Player 1. enter valid choice \n";
+        }
+    }
+    // Set up player 2
+    cout << "Enter Player 2 name: ";
+    cin >> player2Name;
+    cout << "Choose Player 2 type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
+
+    while (true) {
+        cin >> choice;
+
+        if (choice == '1') {
+            players[1] = new Num_Player<char>(player2Name, 2);
+            break;
+        }
+        else if (choice == '2') {
+            players[1] = new Num_Random_Player<char>(2);
+            break;
+        }
+        else {
+            cout << "Invalid choice for Player 2. enter valid choice.\n";
+        }
+    }
+
+    // Create the game manager and run the game
+    GameManager<char> pyramid_game(B, players);
+    pyramid_game.run();
+
+    // Clean up
+    delete B;
+    for (int i = 0; i < 2; ++i) {
+        delete players[i];
+    }
+}
 
 void game6() {}
 
@@ -330,7 +391,7 @@ int main() {
         main();
 
     } else if (n == '2') {
-         game2();
+        game2();
         main();
 
     } else if (n == '3') {
@@ -342,7 +403,7 @@ int main() {
         main();
 
     } else if (n == '5') {
-        //game5();
+        game5();
         main();
 
     } else if (n == '6') {
