@@ -64,21 +64,21 @@ Four_In_Row<T>::Four_In_Row() {
 
 template<typename T>
 bool Four_In_Row<T>::update_board(int x, int y, T symbol) {
+    // Only update if move is valid
     if (x >= 0 && x < this->rows && y >= 0 && y < this->columns && this->board[x][y] == 0) {
-        // Ensure the first move is in the last row
         if (this->n_moves == 0 && x != this->rows - 1) {
             cout << "The first move must be in the last row!" << endl;
-            return false; 
+            return false;
         }
-
-        this->board[x][y] = toupper(symbol); 
+        
+        this->board[x][y] = toupper(symbol);
         this->n_moves++;
         return true;
     }
-    cout << "Invalid move. Please try again." << endl;
-    return false; 
-}
 
+    cout << "Invalid move. Please try again." << endl;
+    return false;
+}
 
 // Display the board and the pieces on it
 template <typename T>
@@ -92,9 +92,9 @@ void Four_In_Row<T>::display_board() {
             else {
                 cout << "  " << this->board[i][j] << "  ";
             }
-            cout << " |"; 
+            cout << " |";
         }
-        cout << "\n----------------------------------------------------------"; 
+        cout << "\n---------------------------------------------------";
     }
     cout << endl;
 }
@@ -102,61 +102,57 @@ void Four_In_Row<T>::display_board() {
 
 template <typename T>
 bool Four_In_Row<T>::is_win() {
-    // Check rows and columns
+    // Check rows for a win
     for (int i = 0; i < this->rows; i++) {
-        if ((this->board[i][0] == this->board[i][1] && this->board[i][1] == this->board[i][2] &&
-            this->board[i][2] == this->board[i][3] && this->board[i][0] != 0) ||
-            (this->board[0][i] == this->board[1][i] && this->board[1][i] == this->board[2][i] &&
-                this->board[2][i] == this->board[3][i] && this->board[0][i] != 0)) {
-            return true;
-        }
-    }
-
-    vector<std::vector<int>> board = {
-            {0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0},
-            {0, 0, 1, 0, 0, 0},
-            {0, 1, 1, 1, 0, 0},
-            {1, 0, 1, 0, 1, 0},
-            {0, 1, 0, 0, 0, 1},
-            {0, 0, 0, 0, 0, 0}
-    };
-
-    bool found = false;
-
-    // Check top-left to bottom-right diagonals
-    for (int i = 0; i <= this->rows - 4; ++i)
-    {
-        for (int j = 0; j <= this->columns - 4; ++j)
-        {
-            if (this->board[i][j] != 0 && this->board[i][j] == this->board[i + 1][j + 1] &&
-                this->board[i][j] == this->board[i + 2][j + 2] && this->board[i][j] == this->board[i + 3][j + 3]) {
-                found = true;
-                break;
+        for (int j = 0; j <= this->columns - 4; j++) {
+            if (this->board[i][j] != 0 &&
+                this->board[i][j] == this->board[i][j + 1] &&
+                this->board[i][j] == this->board[i][j + 2] &&
+                this->board[i][j] == this->board[i][j + 3]) {
+                return true;
             }
         }
-        if (found) {
-            return true;
+    }
+
+    // Check columns for a win
+    for (int i = 0; i <= this->rows - 4; i++) {
+        for (int j = 0; j < this->columns; j++) {
+            if (this->board[i][j] != 0 &&
+                this->board[i][j] == this->board[i + 1][j] &&
+                this->board[i][j] == this->board[i + 2][j] &&
+                this->board[i][j] == this->board[i + 3][j]) {
+                return true;
+            }
         }
     }
 
-    // Check top-left to bottom-right diagonals
-    for (int i = 0; i <= this->rows - 4; ++i)
-    {
-        for (int j = 3; j <= this->columns; ++j)
-        {
-            if (this->board[i][j] != 0 && this->board[i][j] == this->board[i + 1][j - 1] &&
-                this->board[i][j] == this->board[i + 2][j - 2] && this->board[i][j] == this->board[i + 3][j - 3]) {
-                found = true;
-                break;
+    // Check diagonals (top-left to bottom-right)
+    for (int i = 0; i <= this->rows - 4; i++) {
+        for (int j = 0; j <= this->columns - 4; j++) {
+            if (this->board[i][j] != 0 &&
+                this->board[i][j] == this->board[i + 1][j + 1] &&
+                this->board[i][j] == this->board[i + 2][j + 2] &&
+                this->board[i][j] == this->board[i + 3][j + 3]) {
+                return true;
             }
         }
-        if (found) {
-            return true;
+    }
+
+    // Check diagonals (top-right to bottom-left)
+    for (int i = 0; i <= this->rows - 4; i++) {
+        for (int j = 3; j < this->columns; j++) {
+            if (this->board[i][j] != 0 &&
+                this->board[i][j] == this->board[i + 1][j - 1] &&
+                this->board[i][j] == this->board[i + 2][j - 2] &&
+                this->board[i][j] == this->board[i + 3][j - 3]) {
+                return true;
+            }
         }
     }
+
     return false;
 }
+
 
 // Return true if 9 moves are done and no winner
 template <typename T>
@@ -171,14 +167,17 @@ bool Four_In_Row<T>::game_is_over() {
 
 
 //----------------------------------------
+
+
 // Constructor for X_O_Player
 template <typename T>
 X_O_Player<T>::X_O_Player(string name, T symbol) : Player<T>(name, symbol) {}
 
 template <typename T>
 void X_O_Player<T>::getmove(int& x, int& y) {
-    cout << "\nPlease enter your move y (0-6): ";
-    x = 5;
+    cout << "Enter your move x (0-5): ";
+    cin >> x;
+    cout << "Enter your move y (0-6): ";
     cin >> y;
 }
 
@@ -187,14 +186,13 @@ template <typename T>
 X_O_Random_Player<T>::X_O_Random_Player(T symbol) : RandomPlayer<T>(symbol) {
     this->dimension = 3;
     this->name = "Random Computer Player";
-    srand(static_cast<unsigned int>(time(0)));  // Seed the random number generator
+    srand(static_cast<unsigned int>(time(0)));  
 }
 
 template <typename T>
 void X_O_Random_Player<T>::getmove(int& x, int& y) {
-    x = rand() % 6;  // Random number between 0 and 2
-    y = rand() % 7;
+    x = rand() % 6;  
+    y = rand() % 7;  
 }
 
 #endif //_3X3X_O_H
-
