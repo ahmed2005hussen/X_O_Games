@@ -59,11 +59,11 @@ private:
 template <typename T>
 Num_Board<T>::Num_Board() {
     this->rows = this->columns = 3;
-    this->board = new T * [this->rows]; 
+    this->board = new T * [this->rows];
     for (int i = 0; i < this->rows; i++) {
         this->board[i] = new T[this->columns];
         for (int j = 0; j < this->columns; j++) {
-            this->board[i][j] = 0; 
+            this->board[i][j] = 0;
         }
     }
     this->n_moves = 0;
@@ -74,7 +74,7 @@ template<typename T>
 bool Num_Board<T>::update_board(int x, int y, T symbol) {
     if (x >= 0 && x < this->rows && y >= 0 && y < this->columns && this->board[x][y] == 0) {
         vector<int>& availableNums = (symbol % 2 != 0) ? v1 : v2;
-
+        
         auto it = find(availableNums.begin(), availableNums.end(), symbol);
         if (it == availableNums.end()) {
             cout << "Invalid Number! Please choose a valid number.\n";
@@ -102,7 +102,7 @@ void Num_Board<T>::display_board() {
                 cout << "(" << i << "," << j << ") ";
             }
             else {
-                cout << "   " << this->board[i][j] << "   ";
+                cout << "   " << static_cast<int>(this->board[i][j]) << "   ";
             }
             cout << " |";
         }
@@ -166,21 +166,25 @@ void Num_Player<T>::getmove(int& x, int& y) {
     cout << "Available numbers: ";
     for (int num : availableNumbers) cout << num << " ";
 
-    int chosenNumber;
+    string chosenInput;
     cout << "\n" << this->name << ", Enter your move (choose a number): ";
-    cin >> chosenNumber;
+    cin >> chosenInput;
+
+    int chosenNumber = stoi(chosenInput);
 
     auto it = find(availableNumbers.begin(), availableNumbers.end(), chosenNumber);
     if (it == availableNumbers.end()) {
         cout << "Invalid Number! Please choose a valid number.\n";
-        x = -1; 
+        x = -1;
         y = -1;
         return;
     }
 
-    cout << "\n" << this->name << ", enter your position : ";
-    char move;
-    cin >> move;
+    string positionInput;
+    cout << "\n" << this->name << ", enter your position: ";
+    cin >> positionInput;
+
+    char move = positionInput[0];
 
     if (move == '1') {
         x = 0;
@@ -219,20 +223,21 @@ void Num_Player<T>::getmove(int& x, int& y) {
         y = 2;
     }
     else {
-        x = 0;
-        y = 0;
+        x = -1;
+        y = -1;
+        cout << "Invalid position. Try again.\n";
+        return;
     }
 
     this->symbol = chosenNumber;
 }
-
 
 // Constructor for Num_Random_Player
 template <typename T>
 Num_Random_Player<T>::Num_Random_Player(T symbol) : RandomPlayer<T>(symbol) {
     this->dimension = 3;
     this->name = "Random Computer Player";
-    srand(static_cast<unsigned int>(time(0))); 
+    srand(static_cast<unsigned int>(time(0)));
 }
 
 // Fetch the correct available numbers based on the player's symbol
@@ -256,8 +261,9 @@ void Num_Random_Player<T>::getmove(int& x, int& y) {
     int chosenNumber = availableNumbers[rand() % availableNumbers.size()];
     cout << this->name << " (Random Player) chooses number: " << chosenNumber << endl;
 
+    // Generate random positions
     x = rand() % 3;
-    y = rand() % 3; 
+    y = rand() % 3;
 }
 
 #endif 
