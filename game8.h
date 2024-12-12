@@ -30,7 +30,10 @@ public:
     bool is_draw();
 
     bool game_is_over();
+
+    ~board8();
 };
+
 
 template<typename T>
 bool board8<T>::game_is_over() {
@@ -114,6 +117,11 @@ board8<T>::board8() {
 
 }
 
+template<typename T>
+board8<T>::~board8() {
+    delete this->board;
+}
+
 
 template<typename T>
 class unlimated_board : public Board<T> {
@@ -190,7 +198,7 @@ int unlimated_board<T>::checkwin() {
             return 1;
         }
     }
-// المربع الثاني (من [0][3] إلى [2][5])
+
     if (a2) {
         if (this->board[0][3] != ' ' && this->board[0][3] == this->board[0][4] &&
             this->board[0][3] == this->board[0][5]) {
@@ -556,6 +564,10 @@ bool unlimated_board<T>::is_win() {
 
 template<typename T>
 void unlimated_board<T>::display_board() {
+
+    cout << "the ultimate board" << endl;
+    cout << endl;
+    cout << "y: 0   1   2       3   4   5       6   7   8    ";
     for (int i = 0; i < this->rows; i++) {
         if (i == 3 || i == 6) {
             cout << endl << endl;;
@@ -563,16 +575,21 @@ void unlimated_board<T>::display_board() {
         cout << "\n| ";
         for (int j = 0; j < this->columns; j++) {
             cout << setw(2) << this->board[i][j] << " |";
+            if (j == 8) {
+                cout << "  " << i;
+            }
             if (j == 2 || j == 5) {
                 cout << "   |";
             }
         }
         cout << "\n--------------   -------------   --------------   ";
     }
-    cout << endl;
-
+    cout << endl << endl;
+    cout << "The main board " << endl;
     b.display_board();
     cout << endl;
+    cout << endl;
+
 
 }
 
@@ -664,5 +681,25 @@ void player_8<T>::getmove(int &x, int &y) {
 
 }
 
+
+
+
+template<typename T>
+class player_Random_8 : public RandomPlayer<T> {
+public:
+    player_Random_8(T symbol);
+
+    void getmove(int &x, int &y);
+};
+
+template<typename T>
+void player_Random_8<T>::getmove(int &x, int &y) {
+    srand(static_cast<unsigned int>(time(0)));
+    x = rand() % 9;
+    y = rand() % 9;
+}
+
+template<typename T>
+player_Random_8<T>::player_Random_8(T symbol):RandomPlayer<T>(symbol) {}
 
 #endif //XO_GAME8_H
