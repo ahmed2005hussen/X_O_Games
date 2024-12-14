@@ -128,7 +128,65 @@ void game2() {
         delete players[i];
     }} // done
 
-void game3() {}
+void game3() {
+    int choice;
+    Player<char>* players[2];
+    FiveByFive_Board<char>* B = new FiveByFive_Board<char>();
+    string playerXName, player2Name;
+
+    cout << "Welcome to FiveByFive XO Game :)\n";
+
+    // Set up player 1
+    cout << "Enter Player X name: ";
+    cin >> playerXName;
+    cout << "Choose Player X type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
+    cin >> choice;
+
+    switch(choice) {
+        case 1:
+            players[0] = new FiveByFive_Player<char>(playerXName, 'X');
+        break;
+        case 2:
+            players[0] = new FiveByFive_Random_Player<char>('X');
+        break;
+        default:
+            cout << "Invalid choice for Player 1. Exiting the game.\n";
+        return 1;
+    }
+
+    // Set up player 2
+    cout << "Enter Player 2 name: ";
+    cin >> player2Name;
+    cout << "Choose Player 2 type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
+    cin >> choice;
+
+    switch(choice) {
+        case 1:
+            players[1] = new FiveByFive_Player<char>(player2Name, 'O');
+        break;
+        case 2:
+            players[1] = new FiveByFive_Random_Player<char>('O');
+        break;
+        default:
+            cout << "Invalid choice for Player 2. Exiting the game.\n";
+        return 1;
+    }
+
+    // Create the game manager and run the game
+    GameManager<char> FiveByFive_game(B, players);
+    FiveByFive_game.run();
+
+    // Clean up
+    delete B;
+    for (int i = 0; i < 2; ++i) {
+        delete players[i];
+    }
+
+}
 
 void game4() {
 
@@ -252,7 +310,66 @@ void game5()
     }
 }
 
-void game6() {}
+void game6() {
+int choice;
+    Player<char>* players[2];
+    Misere_Board<char>* B = new Misere_Board<char>();
+    string playerXName, player2Name;
+
+    cout << "Welcome to Misere XO Game :)\n";
+
+    // Set up player 1
+    cout << "Enter Player X name: ";
+    cin >> playerXName;
+    cout << "Choose Player X type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
+    cin >> choice;
+
+    switch(choice) {
+        case 1:
+            players[0] = new Misere_Player<char>(playerXName, 'X');
+        break;
+        case 2:
+            players[0] = new Misere_Random_Player<char>('X');
+        break;
+        default:
+            cout << "Invalid choice for Player 1. Exiting the game.\n";
+        return 1;
+    }
+
+    // Set up player 2
+    cout << "Enter Player 2 name: ";
+    cin >> player2Name;
+    cout << "Choose Player 2 type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
+    cin >> choice;
+
+    switch(choice) {
+        case 1:
+            players[1] = new Misere_Player<char>(player2Name, 'O');
+        break;
+        case 2:
+            players[1] = new Misere_Random_Player<char>('O');
+        break;
+        default:
+            cout << "Invalid choice for Player 2. Exiting the game.\n";
+        return 1;
+    }
+
+    // Create the game manager and run the game
+    GameManager<char> x_o_game(B, players);
+    x_o_game.run();
+
+    // Clean up
+    delete B;
+    for (int i = 0; i < 2; ++i) {
+        delete players[i];
+    }
+
+
+}
 
 void game7() {
     char choice;
