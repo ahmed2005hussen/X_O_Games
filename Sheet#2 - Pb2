@@ -1,0 +1,412 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+class StringSet
+{
+private:
+    vector<string> words;
+
+    // Normalize text: convert to lowercase and remove punctuation
+    string low(const string &str) const
+    {
+        string r;
+        for (char c : str)
+        {
+            if (isalnum(c) || isspace(c)) // Keep only alphanumeric characters and spaces
+            {
+                r += tolower(c);
+            }
+        }
+        return r;
+    }
+
+    // Split a string into words
+    vector<string> splitW(const string &str) const
+    {
+        vector<string> v;
+        string s;
+        stringstream ss(str);
+
+        while (ss >> s) // Extract words by spaces
+        {
+            v.push_back(s);
+        }
+        return v;
+    }
+
+public:
+    // Constructor to load words from a file
+    StringSet(const string &filename)
+    {
+        ifstream file(filename);
+        if (!file)
+        {
+            cerr << "Error opening file: " << filename << endl;
+            exit(EXIT_FAILURE);
+        }
+
+        stringstream buff;
+        buff << file.rdbuf();
+        words = splitW(low(buff.str())); // Normalize and split words
+    }
+
+    // Constructor to load words from a string
+    StringSet(const string &str, bool isStr)
+    {
+        words = splitW(low(str)); // Normalize and split words
+    }
+
+    // Add a word to the set
+    void adds(const string &str)
+    {
+        words.push_back(str);
+    }
+
+    // Remove a word from the set
+    void removes(const string &str)
+    {
+        auto it = find(words.begin(), words.end(), str);
+        if (it != words.end())
+        {
+            words.erase(it);
+        }
+    }
+
+    // Clear all words
+    void clears()
+    {
+        words.clear();
+    }
+
+    // Get the number of words in the set
+    size_t size() const
+    {
+        return words.size();
+    }
+
+    // Print all words as they are (without removing duplicates)
+    void PrintRaw() const
+    {
+        for (const string &word : words)
+        {
+            cout << word << " ";
+        }
+        cout << endl;
+    }
+
+    // Remove duplicates while preserving order
+    vector<string> removeDuplicatesPreservingOrder(const vector<string> &v) const
+    {
+        vector<string> result;
+        for (const string &word : v)
+        {
+            if (find(result.begin(), result.end(), word) == result.end()) // Word not found in result
+            {
+                result.push_back(word); // Add to result if not a duplicate
+            }
+        }
+        return result;
+    }
+
+    // Union of two sets (without sorting)
+    StringSet operator+(const StringSet &w) const
+    {
+        StringSet res("", true);
+        res.words = words; // Start with this set's words
+        res.words.insert(res.words.end(), w.words.begin(), w.words.end()); // Add words from the other set
+        res.words = removeDuplicatesPreservingOrder(res.words); // Remove duplicates while preserving order
+        return res;
+    }
+
+    // Intersection of two sets (without sorting)
+    StringSet operator*(const StringSet &w) const
+    {
+        StringSet res("", true);
+        for (const string &word : words)
+        {
+            if (find(w.words.begin(), w.words.end(), word) != w.words.end()) // Check for common words
+            {
+                res.words.push_back(word);
+            }
+        }
+        res.words = removeDuplicatesPreservingOrder(res.words); // Remove duplicates while preserving order
+        return res;
+    }
+
+    // Calculate similarity between two sets
+    double similarity(const StringSet &st) const
+    {
+        size_t intersSize = (*this * st).size();
+        size_t size1 = this->size();
+        size_t size2 = st.size();
+
+        if (size1 == 0 || size2 == 0)
+        {
+            return 0.0; // Avoid division by zero
+        }
+
+        return static_cast<double>(intersSize) / sqrt(static_cast<double>(size1 * size2));
+    }
+};
+
+void menu()
+{
+    cout << "Welcome to Our Program!" << endl;
+    cout << "\nMain Menu: " << endl;
+    cout << "1. Enter two Files" << endl;
+    cout << "2. Enter two Strings" << endl;
+    cout << "3. Exit" << endl;
+    cout << "Please Enter Your Choice: ";
+}
+
+void menu1()
+{
+    cout << "\nString's Menu: " << endl;
+    cout << "1. Add a String to the First String" << endl;
+    cout << "2. Add a String to the Second String" << endl;
+    cout << "3. Remove a String from the First String" << endl;
+    cout << "4. Remove a String from the Second String" << endl;
+    cout << "5. Clear the First String" << endl;
+    cout << "6. Clear the Second String" << endl;
+    cout << "7. Display the Current String" << endl;
+    cout << "8. Display the Union and Intersection" << endl;
+    cout << "9. Display Similarity" << endl;
+    cout << "0. Exit" << endl;
+    cout << "\nPlease Enter Your Choice: ";
+}
+
+// Menu function
+void menu2()
+{
+    cout << "\nFile's Menu: " << endl;
+    cout << "1. Add a String to the First Document" << endl;
+    cout << "2. Add a String to the Second Document" << endl;
+    cout << "3. Remove a String from the First Document" << endl;
+    cout << "4. Remove a String from the Second Document" << endl;
+    cout << "5. Clear the First Document" << endl;
+    cout << "6. Clear the Second Document" << endl;
+    cout << "7. Display the Current Documents" << endl;
+    cout << "8. Display the Union and Intersection" << endl;
+    cout << "9. Display Similarity" << endl;
+    cout << "0. Exit" << endl;
+    cout << "\nPlease Enter Your Choice: ";
+}
+
+int main() {
+    int c2;
+    string s1, s2;
+    StringSet d1("", true);
+    StringSet d2("", true);
+    bool IsIns = false;
+    while (true)
+    {
+        menu();
+        cin >> c2;
+        if (c2 == 1)
+        {
+            string file1, file2;
+            cout << "\nPlease Enter the Name of the first file: ";
+            cin >> file1;
+
+            cout << "\nEnter the Name of the Second file: ";
+            cin >> file2;
+
+            // Create sets from files
+            d1 = StringSet(file1);
+            d2 = StringSet(file2);
+            IsIns = true;
+
+            int c;
+            string str;
+            while (true)
+            {
+                menu2();  // Display menu
+                cin >> c;
+
+                switch (c)
+                {
+                    case 1:
+                        cout << "\nEnter the string to add to the first set: ";
+                        cin.ignore();  // Clear the input buffer before reading a string
+                        getline(cin, str);
+                        d1.adds(str);
+                        break;
+
+                    case 2:
+                        cout << "\nEnter the string to add to the second set: ";
+                        cin.ignore();
+                        getline(cin, str);
+                        d2.adds(str);
+                        break;
+
+                    case 3:
+                        cout << "\nEnter the string to remove from the first set: ";
+                        cin.ignore();
+                        getline(cin, str);
+                        d1.removes(str);
+                        break;
+
+                    case 4:
+                        cout << "\nEnter the string to remove from the second set: ";
+                        cin.ignore();
+                        getline(cin, str);
+                        d2.removes(str);
+                        break;
+
+                    case 5:
+                        d1.clears();
+                        cout << "\nThe first set has been cleared." << endl;
+                        break;
+
+                    case 6:
+                        d2.clears();
+                        cout << "\nThe second set has been cleared." << endl;
+                        break;
+
+                    case 7:
+                        cout << "\nCurrent content of the First Document:" << endl;
+                        d1.PrintRaw();
+                        cout << "\nCurrent content of the Second Document:" << endl;
+                        d2.PrintRaw();
+                        break;
+
+                    case 8:
+                    {
+                        StringSet UnionS = d1 + d2;
+                        cout << "\nUnion of the documents:" << endl;
+                        UnionS.PrintRaw();
+                        StringSet IntersecS = d1 * d2;
+                        cout << "\n\nIntersection of the documents:" << endl;
+                        IntersecS.PrintRaw();
+                        break;
+                    }
+
+                    case 9:
+                    {
+                        double siml = d1.similarity(d2);
+                        cout << "\nSimilarity Between them is: " << siml << endl;
+                        break;
+                    }
+
+                    case 0:
+                        cout << "\nExiting the program." << endl;
+                        return 0;
+
+                    default:
+                        cout << "\nInvalid Input!" << endl;
+                        break;
+                }
+            }
+        } else if (c2 == 2)
+        {
+            cout << "\nPlease Enter the First String: ";
+            cin.ignore();
+            getline(cin, s1);
+
+            cout << "\nPlease Enter the Second String: ";
+            getline(cin, s2);
+
+            d1 = StringSet(s1, true);
+            d2 = StringSet(s2, true);
+            IsIns = true;
+
+            int c3;
+            string str;
+            while (true)
+            {
+                menu1();  // Display menu
+                cin >> c3;
+
+                switch (c3)
+                {
+                    case 1:
+                        cout << "\nEnter the string to add to the first String: ";
+                        cin.ignore();  // Clear the input buffer before reading a string
+                        getline(cin, str);
+                        d1.adds(str);
+                        break;
+                    case 2:
+                        cout << "\nEnter the string to add to the second String: ";
+                        cin.ignore();
+                        getline(cin, str);
+                        d2.adds(str);
+                        break;
+
+                    case 3:
+                        cout << "\nEnter the string to remove from the first String: ";
+                        cin.ignore();
+                        getline(cin, str);
+                        d1.removes(str);
+                        break;
+
+                    case 4:
+                        cout << "\nEnter the string to remove from the second String: ";
+                        cin.ignore();
+                        getline(cin, str);
+                        d2.removes(str);
+                        break;
+
+                    case 5:
+                        d1.clears();
+                        cout << "\nThe first String has been cleared." << endl;
+                        break;
+
+                    case 6:
+                        d2.clears();
+                        cout << "\nThe second String has been cleared." << endl;
+                        break;
+
+                    case 7:
+                        cout << "\nCurrent content of the First String:" << endl;
+                        d1.PrintRaw();
+                        cout << "\n\nCurrent content of the Second String:" << endl;
+                        d2.PrintRaw();
+                        break;
+
+                    case 8:
+                    {
+                        StringSet UnionS = d1 + d2;
+                        cout << "\nUnion of the Strings:" << endl;
+                        UnionS.PrintRaw();
+                        StringSet IntersecS = d1 * d2;
+                        cout << "\n\nIntersection of the Strings:" << endl;
+                        IntersecS.PrintRaw();
+                        break;
+                    }
+
+                    case 9:
+                    {
+                        double siml = d1.similarity(d2);
+                        cout << "\nSimilarity Between them is: " << siml << endl;
+                        break;
+                    }
+
+                    case 0:
+                        cout << "\nExiting the program." << endl;
+                        return 0;
+
+                    default:
+                        cout << "\nInvalid Input!" << endl;
+                        break;
+                }
+            }
+        } else
+        {
+            cout << "\nInvalid Input!" << endl;
+        }
+
+        if (!IsIns)
+        {
+            cout << "\nError Opening Documents, Exiting the Program..." << endl;
+            return 0;
+        }
+    return 0;
+    }
+}
+
