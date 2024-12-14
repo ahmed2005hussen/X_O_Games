@@ -22,6 +22,7 @@ template<typename T>
 class board7 : public Board<T> {
 public:
     board7();
+    ~board7();
 
     bool update_board(int x, int y, T symbol);
 
@@ -33,6 +34,11 @@ public:
 
     bool game_is_over();
 };
+
+template<typename T>
+board7<T>::~board7() {
+checkrandom = true; 
+}
 
 template<typename T>
 class player_7 : public Player<T> {
