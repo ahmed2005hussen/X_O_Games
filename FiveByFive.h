@@ -1,5 +1,9 @@
-#ifndef _FiveByFive_H
-#define _FiveByFive_H
+//
+// Created by mawada on 14/12/2024.
+//
+
+#ifndef XO_FIVE_BY_FIVE_H
+#define XO_FIVE_BY_FIVE_H
 
 #include "BoardGame_Classes.h"
 #include <iostream>
@@ -52,7 +56,7 @@ template<typename T>
 FiveByFive_Board<T>::FiveByFive_Board() {
     this->rows = 5;
     this->columns = 5;
-    this->board = new char*[this->rows];
+    this->board = new char *[this->rows];
     for (int i = 0; i < this->rows; ++i) {
         this->board[i] = new char[this->columns];
         for (int j = 0; j < this->columns; ++j) {
@@ -87,7 +91,7 @@ void FiveByFive_Board<T>::display_board() {
     for (int j = 1; j <= this->columns; ++j) {
         cout << setw(4) << j;
     }
-    cout << "\n---------------------------------";
+    cout << "\n-------------------------";
 
     for (int i = 0; i < this->rows; ++i) {
         // Row number to the left of the board
@@ -95,7 +99,7 @@ void FiveByFive_Board<T>::display_board() {
         for (int j = 0; j < this->columns; ++j) {
             cout << setw(2) << this->board[i][j] << " |";
         }
-        cout << "\n---------------------------------";
+        cout << "\n-------------------------";
     }
     cout << "\n                                   ";
     cout << endl;
@@ -108,29 +112,77 @@ bool FiveByFive_Board<T>::is_win() {
     if (this->n_moves == 24) {
         // Check rows and columns
         for (int i = 0; i < this->rows; ++i) {
-            if ((this->board[i][0] == this->board[i][1] && this->board[i][1] == this->board[i][2] && this->board[i][0] == 'X') ||
-                (this->board[0][i] == this->board[1][i] && this->board[1][i] == this->board[2][i] && this->board[0][i] == 'X')) {
-                countx++;
-            } else if ((this->board[i][0] == this->board[i][1] && this->board[i][1] == this->board[i][2] && this->board[i][0] == 'O') ||
-                       (this->board[0][i] == this->board[1][i] && this->board[1][i] == this->board[2][i] && this->board[0][i] == 'O')) {
-                counto++;
+            for (int j = 0; j <= this->columns - 3; ++j) {
+                if (this->board[i][j] == this->board[i][j + 1] && this->board[i][j + 1] == this->board[i][j + 2]) {
+                    if (this->board[i][j] == 'X') {
+                        countx++;
+                    } else if (this->board[i][j] == 'O') {
+                        counto++;
+                    }
+                }
             }
         }
-        // Check diagonals
-        if ((this->board[0][0] == this->board[1][1] && this->board[1][1] == this->board[2][2] &&
-             this->board[3][3] == this->board[4][4] && this->board[0][0] == 'X') ||
-            (this->board[0][4] == this->board[1][3] && this->board[2][2] == this->board[3][1] &&
-             this->board[4][0] == 'X')) {
+
+        for (int j = 0; j < this->columns; ++j) {
+            for (int i = 0; i <= this->rows - 3; ++i) {
+                if (this->board[i][j] == this->board[i + 1][j] && this->board[i + 1][j] == this->board[i + 2][j]) {
+                    if (this->board[i][j] == 'X') {
+                        countx++;
+                    } else if (this->board[i][j] == 'O') {
+                        counto++;
+                    }
+                }
+            }
+        }
+
+        if (this->board[0][0] == this->board[1][1] && this->board[1][1] == this->board[2][2] && this->board[0][0] == 'X') {
             countx++;
-        } else if ((this->board[0][0] == this->board[1][1] && this->board[1][1] == this->board[2][2] &&
-                    this->board[3][3] == this->board[4][4] && this->board[0][0] == 'O') ||
-                   (this->board[0][4] == this->board[1][3] && this->board[2][2] == this->board[3][1] &&
-                    this->board[4][0] == 'O')) {
+        } else if (this->board[0][0] == this->board[1][1] && this->board[1][1] == this->board[2][2] && this->board[0][0] == 'O') {
             counto++;
         }
 
-        cout << "X Wins: " << countx << endl;
-        cout << "O Wins: " << counto << endl;
+        if (this->board[1][1] == this->board[2][2] && this->board[2][2] == this->board[3][3] && this->board[1][1] == 'X') {
+            countx++;
+        } else if (this->board[1][1] == this->board[2][2] && this->board[2][2] == this->board[3][3] && this->board[1][1] == 'O') {
+            counto++;
+        }
+
+        if (this->board[2][2] == this->board[3][3] && this->board[3][3] == this->board[4][4] && this->board[2][2] == 'X') {
+            countx++;
+        } else if (this->board[2][2] == this->board[3][3] && this->board[3][3] == this->board[4][4] && this->board[2][2] == 'O') {
+            counto++;
+        }
+
+        if (this->board[0][4] == this->board[1][3] && this->board[1][3] == this->board[2][2] && this->board[0][4] == 'X') {
+            countx++;
+        } else if (this->board[0][4] == this->board[1][3] && this->board[1][3] == this->board[2][2] && this->board[0][4] == 'O') {
+            counto++;
+        }
+
+        if (this->board[1][3] == this->board[2][2] && this->board[2][2] == this->board[3][1] && this->board[1][3] == 'X') {
+            countx++;
+        } else if (this->board[1][3] == this->board[2][2] && this->board[2][2] == this->board[3][1] && this->board[1][3] == 'O') {
+            counto++;
+        }
+
+        if (this->board[2][2] == this->board[3][1] && this->board[3][1] == this->board[4][0] && this->board[2][2] == 'X') {
+            countx++;
+        } else if (this->board[2][2] == this->board[3][1] && this->board[3][1] == this->board[4][0] && this->board[2][2] == 'O') {
+            counto++;
+        }
+
+
+
+        if (countx > counto) {
+            cout << "player X is win " << endl;
+            cout << "X Wins: " << countx << endl;
+            cout << "O Wins: " << counto << endl;
+        }
+        else if(countx<counto){
+            cout << "player O is win " << endl;
+            cout << "X Wins: " << countx << endl;
+            cout << "O Wins: " << counto << endl;
+        }
 
         return countx > counto || counto > countx;
     }
@@ -160,7 +212,7 @@ bool FiveByFive_Board<T>::game_is_over() {
 // Constructor for FiveByFive_Player
 template<typename T>
 FiveByFive_Player<T>::FiveByFive_Player(string name, T symbol)
-    : Player<T>(name, symbol) {}
+        : Player<T>(name, symbol) {}
 
 // Get the move from the player
 template<typename T>
@@ -172,7 +224,7 @@ void FiveByFive_Player<T>::getmove(int &x, int &y) {
 // Constructor for FiveByFive_Random_Player
 template<typename T>
 FiveByFive_Random_Player<T>::FiveByFive_Random_Player(T symbol)
-    : RandomPlayer<T>(symbol) {
+        : RandomPlayer<T>(symbol) {
     this->dimension = 5;
     this->name = "Random Computer Player";
     srand(static_cast<unsigned int>(time(0))); // Seed RNG
@@ -185,4 +237,4 @@ void FiveByFive_Random_Player<T>::getmove(int &x, int &y) {
     y = (rand() % this->dimension) + 1;
 }
 
-#endif
+#endif //XO_FIVE_BY_FIVE_H
