@@ -483,6 +483,71 @@ void game8() {
     }
 } // done
 
+
+void game9()
+{
+    char choice;
+    Player<char>* players[2];
+    SUS_Board<char>* B = new SUS_Board<char>();
+    string playerXName, player2Name;
+
+
+    // Set up player 1
+    cout << "Enter Player X name: ";
+    cin >> playerXName;
+    cout << "Choose Player X type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
+    while (true) {
+        cin >> choice;
+
+        if (choice == '1') {
+            players[0] = new SUS_Player<char>(playerXName, 'S');
+            break;
+        }
+        else if (choice == '2') {
+            players[0] = new SUS_Random_Player<char>('S');
+            break;
+        }
+        else {
+            cout << "Invalid choice for Player 1. enter valid choice \n";
+        }
+    }
+    // Set up player 2
+    cout << "Enter Player 2 name: ";
+    cin >> player2Name;
+    cout << "Choose Player 2 type:\n";
+    cout << "1. Human\n";
+    cout << "2. Random Computer\n";
+
+    while (true) {
+        cin >> choice;
+
+        if (choice == '1') {
+            players[1] = new SUS_Player<char>(player2Name, 'U');
+            break;
+        }
+        else if (choice == '2') {
+            players[1] = new SUS_Random_Player<char>('U');
+            break;
+        }
+        else {
+            cout << "Invalid choice for Player 2. enter valid choice.\n";
+        }
+    }
+
+    // Create the game manager and run the game
+    GameManager<char> pyramid_game(B, players);
+    pyramid_game.run();
+
+    // Clean up
+    delete B;
+    for (int i = 0; i < 2; ++i) {
+        delete players[i];
+    }
+}
+
+
 int main() {
 
     char n;
@@ -499,6 +564,7 @@ int main() {
     cout << "6- Misere Tic Tac Toe" << endl;
     cout << "7- 4 x 4 Tic-Tac-Toe" << endl;
     cout << "8- Ultimate Tic Tac Toe" << endl;
+    cout << "9- SUS" << endl;
     cin >> n;
     if (n == '0') {
         cout << "Good bye" << endl;
@@ -535,6 +601,10 @@ int main() {
         game8();
         main();
 
+    } else if (n == '9') {
+        game9();
+        main();
+
     } else {
         cout << "Invalid choice " << endl;
         main();
@@ -542,6 +612,3 @@ int main() {
 
     return 0;
 }
-
-
-
