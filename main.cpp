@@ -5,6 +5,7 @@
 #include "game7.h"
 #include "game8.h"
 #include"Four_In_Row.h"
+#include "SUS.h"
 
 using namespace std;
 
