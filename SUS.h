@@ -58,59 +58,75 @@ SUS_Board<T>::SUS_Board() {
 
 template <typename T>
 bool SUS_Board<T>::update_board(int x, int y, T mark) {
-    // Only update if move is valid
-    if (!(x < 0 || x >= this->rows || y < 0 || y >= this->columns) && (this->board[x][y] == 0 || mark == 0)) {
-        if (mark == 0) {
-            this->n_moves--;
-            this->board[x][y] = 0;
+
+    static bool counted_rows[3] = { false, false, false };
+    static bool counted_columns[3] = { false, false, false };
+    static bool counted_diagonals[2] = { false, false };
+
+    if (x < 0 || x >= this->rows || y < 0 || y >= this->columns || this->board[x][y] != 0) {
+        cout << "Invalid move! Cell is already occupied or out of bounds. Try again.\n";
+        return false;
+    }
+
+    if (mark == 0) {
+        this->n_moves--;
+        this->board[x][y] = 0;
+    }
+    else {
+        this->n_moves++;
+        this->board[x][y] = toupper(mark);
+    }
+
+    for (int i = 0; i < this->rows; i++) {
+        // Check rows
+        if (!counted_rows[i] && this->board[i][0] == 'S' && this->board[i][1] == 'U' && this->board[i][2] == 'S') {
+            counted_rows[i] = true; 
+            if (this->n_moves % 2 == 1) {
+                count1++;
+            }
+            else {
+                count2++;
+            }
+        }
+        // Check columns
+        if (!counted_columns[i] && this->board[0][i] == 'S' && this->board[1][i] == 'U' && this->board[2][i] == 'S') {
+            counted_columns[i] = true; 
+            if (this->n_moves % 2 == 1) {
+                count1++;
+            }
+            else {
+                count2++;
+            }
+        }
+    }
+
+    // Check diagonals
+    if (!counted_diagonals[0] && this->board[0][0] == 'S' && this->board[1][1] == 'U' && this->board[2][2] == 'S') {
+        counted_diagonals[0] = true; 
+        if (this->n_moves % 2 == 1) {
+            count1++;
         }
         else {
-            this->n_moves++;
-            this->board[x][y] = toupper(mark);
-        }
-
-        count1 = 0;
-        count2 = 0;
-
-        for (int i = 0; i < this->rows; i++) {
-            if (this->board[i][0] == 'S' && this->board[i][1] == 'U' && this->board[i][2] == 'S') {
-                count1++;
-            }
-            if (this->board[i][0] == 'U' && this->board[i][1] == 'S' && this->board[i][2] == 'U') {
-                count2++;
-            }
-        }
-
-        for (int i = 0; i < this->columns; i++) {
-            if (this->board[0][i] == 'S' && this->board[1][i] == 'U' && this->board[2][i] == 'S') {
-                count1++;
-            }
-            if (this->board[0][i] == 'U' && this->board[1][i] == 'S' && this->board[2][i] == 'U') {
-                count2++;
-            }
-        }
-
-        if (this->board[0][0] == 'S' && this->board[1][1] == 'U' && this->board[2][2] == 'S') {
-            count1++;
-        }
-        if (this->board[0][2] == 'S' && this->board[1][1] == 'U' && this->board[2][0] == 'S') {
-            count1++;
-        }
-
-        if (this->board[0][0] == 'U' && this->board[1][1] == 'S' && this->board[2][2] == 'U') {
             count2++;
         }
-        if (this->board[0][2] == 'U' && this->board[1][1] == 'S' && this->board[2][0] == 'U') {
-            count2++;
-        }
-
-        cout << "Player 1's count : " << count1 << endl;
-        cout << "Player 2's count : " << count2 << endl;
-
-        return true;
     }
-    return false;
+    if (!counted_diagonals[1] && this->board[0][2] == 'S' && this->board[1][1] == 'U' && this->board[2][0] == 'S') {
+        counted_diagonals[1] = true; 
+        if (this->n_moves % 2 == 1) {
+            count1++;
+        }
+        else {
+            count2++;
+        }
+    }
+
+    cout << "Player 1's count : " << count1 << endl;
+    cout << "Player 2's count : " << count2 << endl;
+
+    return true;
 }
+
+
 
 // Display the board and the pieces on it
 template <typename T>
@@ -135,83 +151,24 @@ void SUS_Board<T>::display_board() {
 // Returns true if there is any winner
 template <typename T>
 bool SUS_Board<T>::is_win() {
-
-    if (this->n_moves < this->rows * this->columns) {
-        return false; 
-    }
-
-    for (int i = 0; i < this->rows; i++) {
-        if (this->board[i][0] == 'S' && this->board[i][1] == 'U' && this->board[i][2] == 'S') {
-            count1++;
-        }
-    }
-
-    for (int i = 0; i < this->columns; i++) {
-        if (this->board[0][i] == 'S' && this->board[1][i] == 'U' && this->board[2][i] == 'S') {
-            count1++;
-        }
-    }
-
-    if (this->board[0][0] == 'S' && this->board[1][1] == 'U' && this->board[2][2] == 'S') {
-        count1++;
-    }
-    if (this->board[0][2] == 'S' && this->board[1][1] == 'U' && this->board[2][0] == 'S') {
-        count1++;
-    }
-
-    for (int i = 0; i < this->rows; i++) {
-        if (this->board[i][0] == 'U' && this->board[i][1] == 'S' && this->board[i][2] == 'U') {
-            count2++; 
-        }
-    }
-
-    for (int i = 0; i < this->columns; i++) {
-        if (this->board[0][i] == 'U' && this->board[1][i] == 'S' && this->board[2][i] == 'U') {
-            count2++; 
-        }
-    }
-
-    if (this->board[0][0] == 'U' && this->board[1][1] == 'S' && this->board[2][2] == 'U') {
-        count2++; 
-    }
-    if (this->board[0][2] == 'U' && this->board[1][1] == 'S' && this->board[2][0] == 'U') {
-        count2++; 
-    }
-
-    if (count1 > count2) {
-        return true;  
-    }
-    else if (count2 > count1) {
-        return false; 
-    }
-
-    return false; 
-}
-
-
-template <typename T>
-bool SUS_Board<T>::is_draw() {
-    if (is_win()) return false;
-
-    if (this->n_moves == this->rows * this->columns) {
-        return true;
+    if (this->n_moves == 9) {
+        return count1 > count2 || count2 > count1;
     }
 
     return false;
 }
 
 
+
+// Return true if 9 moves are done and no winner
+template <typename T>
+bool SUS_Board<T>::is_draw() {
+    return (this->n_moves == 9 && !is_win());
+}
+
 template <typename T>
 bool SUS_Board<T>::game_is_over() {
-    if (is_win()) {
-        return true;
-    }
-
-    if (this->n_moves == this->rows * this->columns) {
-        return true;
-    }
-
-    return false; 
+    return is_win() || is_draw();
 }
 
 
@@ -279,7 +236,7 @@ SUS_Random_Player<T>::SUS_Random_Player(T symbol) : RandomPlayer<T>(symbol) {
 
 template <typename T>
 void SUS_Random_Player<T>::getmove(int& x, int& y) {
-    x = rand() % 3;  
+    x = rand() % 3;
     y = rand() % 3;
 }
 
