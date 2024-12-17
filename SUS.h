@@ -3,10 +3,13 @@
 
 #include "BoardGame_Classes.h"
 
+int* moves_ptr;
+
 template <typename T>
 class SUS_Board :public Board<T> {
 public:
     SUS_Board();
+    ~SUS_Board();
     bool update_board(int x, int y, T symbol);
     void display_board();
     bool is_win();
@@ -54,6 +57,16 @@ SUS_Board<T>::SUS_Board() {
         }
     }
     this->n_moves = 0;
+    moves_ptr = &this->n_moves;
+}
+
+template <typename T>
+SUS_Board<T>::~SUS_Board() {
+    for (int i = 0; i < this->rows; i++) {
+        delete[] this->board[i];
+    }
+    delete[] this->board;
+    cout << "SUS_Board resources have been released.\n";
 }
 
 template <typename T>
@@ -62,6 +75,10 @@ bool SUS_Board<T>::update_board(int x, int y, T mark) {
     static bool counted_rows[3] = { false, false, false };
     static bool counted_columns[3] = { false, false, false };
     static bool counted_diagonals[2] = { false, false };
+
+    if (this->n_moves == 10) {
+        return 1;
+    }
 
     if (x < 0 || x >= this->rows || y < 0 || y >= this->columns || this->board[x][y] != 0) {
         cout << "Invalid move! Cell is already occupied or out of bounds. Try again.\n";
@@ -131,6 +148,11 @@ bool SUS_Board<T>::update_board(int x, int y, T mark) {
 // Display the board and the pieces on it
 template <typename T>
 void SUS_Board<T>::display_board() {
+
+    if (this->n_moves == 10) {
+        return;
+    }
+
     for (int i = 0; i < this->rows; i++) {
         cout << "\n| ";
         for (int j = 0; j < this->columns; j++) {
@@ -144,6 +166,7 @@ void SUS_Board<T>::display_board() {
         }
         cout << "\n-----------------------";
     }
+
     cout << endl;
 }
 
@@ -152,12 +175,16 @@ void SUS_Board<T>::display_board() {
 template <typename T>
 bool SUS_Board<T>::is_win() {
     if (this->n_moves == 9) {
-        return count1 > count2 || count2 > count1;
+        if (count1 > count2) {
+            return true;
+        }
+        else if (count2 > count1) {
+            this->n_moves++;
+            return false;
+        }
     }
-
     return false;
 }
-
 
 
 // Return true if 9 moves are done and no winner
@@ -168,8 +195,9 @@ bool SUS_Board<T>::is_draw() {
 
 template <typename T>
 bool SUS_Board<T>::game_is_over() {
-    return is_win() || is_draw();
+    return is_win() || is_draw() || (*moves_ptr == this->rows * this->columns);
 }
+
 
 
 //--------------------------------------
@@ -180,6 +208,11 @@ SUS_Player<T>::SUS_Player(string name, T symbol) : Player<T>(name, symbol) {}
 
 template <typename T>
 void SUS_Player<T>::getmove(int& x, int& y) {
+
+    if (*moves_ptr == 10) {
+        return;
+    }
+
     cout << "\n" << this->name << ", enter your move : ";
     char move = '0';
     cin >> move;
@@ -224,7 +257,7 @@ void SUS_Player<T>::getmove(int& x, int& y) {
         x = 0;
         y = 0;
     }
-
+   
 }
 
 // Constructor for X_O_Random_Player
