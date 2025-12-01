@@ -14,20 +14,19 @@ Every game is implemented in a separate header file and integrated through a uni
 - **Mawada Emad** - [@MawadaEmad](https://github.com/mawadaemad) 
 ---
 
-## 📁 Repository Structure
-Pyramic_Tic-Tac-Toe.h
-FiveByFive.h
-Four_In_Row.h
-Word_Tic-tac-toe.h
-Num_Tic_Tac_Toe.h
-Misere.h
-game7.h
-game8.h
-SUS.h
-dic.txt
-main.cpp
-README.md
-
+## 📁 Repository Structure  
+Pyramic_Tic-Tac-Toe.h  
+FiveByFive.h  
+Four_In_Row.h  
+Word_Tic-tac-toe.h  
+Num_Tic_Tac_Toe.h  
+Misere.h  
+game7.h  
+game8.h    
+SUS.h  
+dic.txt  
+main.cpp  
+README.md  
 
 ---
 
